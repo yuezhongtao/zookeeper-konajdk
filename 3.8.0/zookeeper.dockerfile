@@ -16,16 +16,12 @@ ENV ZOO_CONF_DIR=/conf \
 # Install required packges
 RUN set -eux; \
     yum update -y; \
-    yum install -y shadow-utils wget util-linux procps-ng net-tools;\
+    yum install -y wget util-linux procps-ng net-tools;\
     DEBIAN_FRONTEND=noninteractive;
 
 
 # Add a user with an explicit UID/GID and create necessary directories
-RUN set -eux; \
-    groupadd -r zookeeper -g 1000; \
-    useradd -r -g zookeeper -u 1000 zookeeper -m; \
-    mkdir -p "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR" "$ZOO_LOG_DIR"; \
-    chown zookeeper:zookeeper "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR" "$ZOO_LOG_DIR"
+RUN set -eux; mkdir -p "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR" "$ZOO_LOG_DIR";
 
 
 ARG GPG_KEY=BBE7232D7991050B54C8EA0ADC08637CA615D22C
@@ -61,9 +57,7 @@ RUN set -eux; \
 #    gpg --keyserver hkps://pgp.mit.edu --recv-keys "$GPG_KEY"; \
 #    gpg --batch --verify "$DISTRO_NAME.tar.gz.asc" "$DISTRO_NAME.tar.gz"; \
     tar -zxf "$DISTRO_NAME.tar.gz"; \
-    mv "$DISTRO_NAME/conf/"* "$ZOO_CONF_DIR"; \
-#    rm -rf "$GNUPGHOME" "$DISTRO_NAME.tar.gz" "$DISTRO_NAME.tar.gz.asc"; \
-    chown -R zookeeper:zookeeper "/$DISTRO_NAME"
+    mv "$DISTRO_NAME/conf/"* "$ZOO_CONF_DIR";
 
 WORKDIR $DISTRO_NAME
 VOLUME ["$ZOO_DATA_DIR", "$ZOO_DATA_LOG_DIR", "$ZOO_LOG_DIR"]
@@ -73,8 +67,8 @@ EXPOSE 2181 2888 3888 8080
 ENV PATH=$PATH:/$DISTRO_NAME/bin \
     ZOOCFGDIR=$ZOO_CONF_DIR
 
-COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/apache-zookeeper-3.8.0-bin/bin/zkServer.sh", "start-foreground"]

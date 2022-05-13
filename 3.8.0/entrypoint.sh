@@ -2,12 +2,6 @@
 
 set -e
 
-# Allow the container to be started with `--user`
-if [[ "$1" =~ 'zkServer.sh' && "$(id -u)" = '0' ]]; then
-    chown -R zookeeper "$ZOO_DATA_DIR" "$ZOO_DATA_LOG_DIR" "$ZOO_LOG_DIR"
-    su zookeeper -c '$@'
-fi
-
 # Generate the config only if it doesn't exist
 if [[ ! -f "$ZOO_CONF_DIR/zoo.cfg" ]]; then
     CONFIG="$ZOO_CONF_DIR/zoo.cfg"
