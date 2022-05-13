@@ -6,6 +6,9 @@ You can learn more about tencent konajdk through [konajdk wiki](https://github.c
 ### Where to file issues
 https://github.com/yuezhongtao/zookeeper-konajdk/issues
 
+### where the image host
+https://hub.docker.com/repository/docker/yuezht/zookeeper-konajdk
+
 ### how to user this image
 
 #### Start a Zookeeper server instance
