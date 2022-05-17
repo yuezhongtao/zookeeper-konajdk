@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: zk-konajdk11-cluster
+  labels:
+    name: zk-konajdk11-cluster
