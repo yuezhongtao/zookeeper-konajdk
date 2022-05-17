@@ -18,6 +18,7 @@ if [[ ! -f "$ZOO_CONF_DIR/zoo.cfg" ]]; then
         echo "maxClientCnxns=$ZOO_MAX_CLIENT_CNXNS"
         echo "standaloneEnabled=$ZOO_STANDALONE_ENABLED"
         echo "admin.enableServer=$ZOO_ADMINSERVER_ENABLED"
+        echo "clientPort=2181"
     } >> "$CONFIG"
     if [[ -z $ZOO_SERVERS ]]; then
       ZOO_SERVERS="server.1=localhost:2888:3888;2181"
